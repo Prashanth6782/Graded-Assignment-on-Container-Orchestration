@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deployment
+  labels:
+    app: backend
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+        - name: backend
+          image: prashanth153/nodejs-backend:latest
+          ports:
+            - containerPort: 3001
+          env:
+            - name: ATLAS_URI
+              value: "mongodb+srv://prashanth153:92jd0Nn8LcP4m5B7@studentprashanth.cuzpigz.mongodb.net/tmbatch7"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-service
+spec:
+  type: ClusterIP
+  selector:
+    app: backend
+  ports:
+    - protocol: TCP
+      port: 3001
+      targetPort: 3001
+
